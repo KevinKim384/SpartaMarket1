@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block contents %}
+<h2>계정 정보</h2>
+{% if request.user == user %}
+<form action = "{% url 'account:account_detail' user.username %}" method = 'POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form1.as_p }}
+    {{ form2.as_p }}
+    <button type = 'submit'> 변경하기 </button><br><br>
+    <a href = "{% url 'account:out_membership' %}">
+        <button>계정 삭제하기</button>
+    </a>
+</form><br>
+{% else %}
+<h2> 권한이 없습니다</h2>
+{% endif %}
+{% comment %} <p>가입일: {{ forms.date_joined|date:"Y-m-d" }}</p>
+<p>팔로워: {{ forms.follower_count }}명 / 팔로잉: {{ forms.following_count }}명</p> {% endcomment %}
+<button onclick="history.back()">돌아가기</button>
+{% endblock contents %}

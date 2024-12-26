@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<h2>사용자 정보</h2>
+<form action = "{% url 'account:user_detail' user.username %}" method = 'POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+</form>
+<br>
+<p>가입일: {{ user.date_joined|date:"Y-m-d" }}</p>
+{% if user.follower_count == 0 %}
+<p>팔로워: 0명<p>
+{% else %}
+<p>팔로워: {{ user.follower_count }}명<p>
+{% endif %}
+{% if user.following_count == 0 %}
+<p>팔로잉: 0명</p>
+{% else %}
+<p>팔로잉: {{ user.following_count }}명</p>
+{% endif %}
+
+{% if request.user != user %}
+<form action="{% url 'account:follow' user.username %}" method="post">
+    {% csrf_token %}
+    {% if follow %}
+        <button type="submit">언팔로우</button>
+    {% else %}
+        <button type="submit">팔로우</button>
+    {% endif %}
+</form>
+{% endif %}
+
+<h3>내가 찜한 물품들</h3>
+<ul>
+{% for article in liked_articles %}
+    <hr>
+    <li><a href="{% url 'article:article_detail' article.pk %}">{{ article.title }}</a></li>
+{% empty %}
+    <li>찜한 물품이 없습니다.</li>
+{% endfor %}
+</ul>
+
+<a href = "{% url 'account:account_detail' user.username %}">
+    <button>계정 정보</button>
+</a><br>
+<br>
+<button onclick="history.back()">돌아가기</button>
+{% endblock contents %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<h1> 새로운 중고 아이템 올리기! </h1>
+<form action = "{% url 'article:save_article' %}" method = 'POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"> 등록 </button>
+</form>
+<button onclick="history.back()">돌아가기</button>
+{% endblock contents%}

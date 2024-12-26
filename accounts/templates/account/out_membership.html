@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<form action = '{% url 'account:user_delete'%}' method = 'POST'>
+    {% csrf_token %}
+    <h1>정말 귀하의 개인 ID와 비밀번호 정보를 삭제하시겠습니까?</h1><br>
+    <h1>한번 삭제된 정보는 되돌릴 수 없습니다!</h1><br><br><br>
+
+    <h1>삭제 하시려면 YES를 눌러주세요!</h1><br>
+        <button type = 'submit'>YES</button>
+    </a>
+</form>
+<button onclick="history.back()">돌아가기</button>
+{% endblock %}

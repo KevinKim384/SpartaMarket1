@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+<a href = "{% url 'account:user_detail' user.username %}">
+    <button>프로필 편집</button>
+</a><br>
+<br>
+<a href = "{% url 'article:new_article' %}">
+    <button>새로운 글 쓰기</button>
+</a><br>
+<br>
+<h2>올라온 품목 목록들</h2>
+{% for form in forms %}
+<hr>
+<a href = "{% url 'article:article_detail' form.pk %}">
+    <p>{{ form.title }}</p>
+</a>
+{% endfor %}
+<button onclick="history.back()">돌아가기</button>
+{% endblock contents %}

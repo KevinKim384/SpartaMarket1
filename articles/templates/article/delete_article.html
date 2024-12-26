@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block contents %}
+<p> 정말 게시한 글을 삭제하시겠습니까? 삭제 하실려면 글 삭제를 눌러주세요!</p>
+<form action="{% url 'article:delete_complete' del_article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="글 삭제">
+</form>
+<button onclick="history.back()">돌아가기</button>
+{% endblock contents %}
