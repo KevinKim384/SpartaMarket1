@@ -20,7 +20,7 @@ Django 기초에 대한 지식을 높이고, 기초적인 문법과 디버깅 �
 
 # 2. 주요 기능
 ### 회원 기능
- -회원가입 / 로그인 / 로그아웃
+ - 로그인 / 회원가입 / 로그아웃
 ### 유저 기능
  - 유저네임, 가입일, 사용자가 등록한 물품 시각적 제공 및 follow 기능(몇명인지 표시)
 ### 게시 기능
@@ -30,4 +30,50 @@ Django 기초에 대한 지식을 높이고, 기초적인 문법과 디버깅 �
 ERD
 ![전체적 ERD](https://github.com/user-attachments/assets/6ea4c78e-e5e3-47a7-b950-6416c5076694)
 
+### 회원기능
+--------------------------------------------------------
+# 로그인
+@require_http_methods(['GET', 'POST'])
+def signin(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data = request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('article:articles')
+        else:
+            # 폼이 유효하지 않으면 다시 로그인 폼을 보여주고 에러 메시지를 전달
+            return render(request, 'account/signin.html', {'form': form})
+    else:
+        form = AuthenticationForm()
+        context = {
+            'form' : form
+        }
+        return render(request, 'account/signin.html', context)
+--------------------------------------------------------
+# 회원가입
+@require_http_methods(['GET', 'POST'])
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        else:
+            context = {'form': form}
+            return render(request, 'account/signin.html', context)
+    else:
+        form = CustomUserCreationForm(request.POST)
+        context = {
+            'form' : form
+        }
+        return render(request, 'account/signup.html', context)
+--------------------------------------------------------
+# 로그아웃
+@require_http_methods(['POST'])
+@login_required
+def user_logout(request):
+    auth_logout(request)
+    return redirect('/')
 
+-----------------------------------------------------------------------------------------
