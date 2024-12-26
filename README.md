@@ -249,3 +249,5 @@ def article_like(request, article_pk):
 - 4. HTML
      -TemplateNotFound 등 views와 연결 문제 발생
      -확인 후 fields의 값에 문제 발견. 디버깅 실행 및 해결
+# 5. 향후 개선 계획
+- 1. 향후 개별 프로필 사진 기능, 각 게시물에 찜수 / 조회수 시각적 표현, 해시태그, 검색 기능 구현
