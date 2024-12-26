@@ -239,15 +239,13 @@ def article_like(request, article_pk):
 # 4. 트러블 슈팅
 - 1. 모델
      -모델의 N:M, 1:N의 관계가 명확하지 않아 오류 발생
-     -확인 후 제대로 된 값을 전달 및 해결
+     -related_name에 문제가 있음을 발견, 수정 후 settings.AUTH_USER_MODEL까지 모델을 고쳐 씀으로써 해결
 - 2. forms
-     -forms에서 fields명을 똑바로 하지 않아 오류 발생
-     -확인 후 models에 문제가 있는 것을 발견 및 해결
+     -forms에서 fields명을 똑바로 하지 않아 오류 발생 특히, CustomUserUpdateForm에서 exclude을 명확히 표시하지 않아 문제 발생
+     -확인 후 exclude = ('password', )에 전달되지 않을 값 수정 후 디버깅 시도 후 성공
 - 3. views
-     -views에서 HTML과 연결이 안되는 오류 발견(특히 id, username 전달 문제)
-     -Models에 있는 관계 확인 후 디버깅 실행 및 해결 완료
-- 4. HTML
-     -TemplateNotFound 등 views와 연결 문제 발생
-     -확인 후 fields의 값에 문제 발견. 디버깅 실행 및 해결
+     -views에서 HTML과 연결이 안되는 오류 발견(특히 id, username 전달 문제), 즉 html에서 <a href="{% url 'account:user_detail' article.author.username %}">여기서 author의 값이 전달되지 않아 발생
+     -데이터 베이스 초기화 및 null=True로 임시로 생성 및 해결
+     
 # 5. 향후 개선 계획
 - 1. 향후 개별 프로필 사진 기능, 각 게시물에 찜수 / 조회수 시각적 표현, 해시태그, 검색 기능 구현
