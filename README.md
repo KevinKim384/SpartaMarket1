@@ -33,7 +33,8 @@ ERD
 # 회원기능
 --------------------------------------------------------
 ### 로그인
-```@require_http_methods(['GET', 'POST'])
+```
+@require_http_methods(['GET', 'POST'])
 def signin(request):
     if request.method == 'POST':
         form = AuthenticationForm(data = request.POST)
@@ -74,11 +75,11 @@ def signup(request):
 @login_required
 def user_logout(request):
     auth_logout(request)
-    return redirect('/')```
+    return redirect('/')
+```
 
-
-```#유저 기능
-
+#유저 기능
+```
 # 계정 자세히 보기
 @require_http_methods(['GET', 'POST'])
 @login_required
@@ -146,4 +147,5 @@ def follow(request, username):
             request.user.follows.remove(user)
         else:
             request.user.follows.add(user)
-    return redirect('account:user_detail', username=username)```
+    return redirect('account:user_detail', username=username)
+```
