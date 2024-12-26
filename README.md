@@ -78,7 +78,7 @@ def user_logout(request):
     return redirect('/')
 ```
 
-#유저 기능
+# 2. 유저 기능
 ```
 # 계정 자세히 보기
 @require_http_methods(['GET', 'POST'])
@@ -149,3 +149,103 @@ def follow(request, username):
             request.user.follows.add(user)
     return redirect('account:user_detail', username=username)
 ```
+# 게시 기능
+```
+# 전체 목록 조회
+@login_required
+def articles(request):
+    forms = Article.objects.all().order_by('-created_at')
+    user = request.user
+    context = {'forms':forms, 'user' : user}
+    return render(request, 'article/article.html', context)
+#--------------------------------------------------------
+# 새로운 게시글 작성
+@require_http_methods(['GET', 'POST'])
+@login_required
+def new_article(request):
+    if request.method == 'POST':
+        form = NewArticleForm(request.POST)
+        if form.is_valid():
+            form.save(commit = False)
+            form.author = request.user
+            form.save()
+            return redirect('article:articles')
+    else:
+        form = NewArticleForm()
+        context = {
+            'form' : form
+        }
+    return render(request, 'article/new_article.html', context)
+#--------------------------------------------------------
+# 게시글 저장
+@login_required
+def save_article(request):
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    new_article = Article.objects.create(title=title, content=content, author = request.user)
+    return redirect("article:articles")
+#--------------------------------------------------------
+# 게시글 자세히 보기기
+@require_http_methods(['GET', 'POST'])
+@login_required
+def article_detail(request, article_pk):
+    article = get_object_or_404(Article, pk = article_pk)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance = article)
+        if form.is_valid():
+            form.save()
+            return redirect('article:articles')
+    else:
+        form = ArticleForm(instance = article)
+        context = {
+            'form':form,
+            'article':article
+        }
+        return render(request, 'article/article_detail.html', context)
+#--------------------------------------------------------
+# 게시글 삭제
+@login_required
+def delete_article(request, article_pk):
+    del_article = Article.objects.get(pk=article_pk)
+    context = {'del_article' : del_article}
+    return render(request, 'article/delete_article.html', context)
+
+@require_http_methods(['POST'])
+@login_required
+def delete_complete(request, article_pk):
+    product = Article.objects.get(pk=article_pk)
+    product.delete()
+    return redirect("article:articles")
+#--------------------------------------------------------
+# 게시글 찜하기
+@login_required
+def article_like(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if request.user in article.likes.all():
+        article.likes.remove(request.user)
+    else:
+        article.likes.add(request.user)
+    return redirect('article:article_detail', article_pk)
+```
+
+# 3. 기술 스텍
+- 언어: Python 3.10+
+- 프레임워크: Django
+
+- Backend:Django
+- 저장소: SQLite
+- 협업도구: GitHub, Slack, Notion
+
+# 4. 트러블 슈팅
+- 1. 모델
+     -모델의 N:M, 1:N의 관계가 명확하지 않아 오류 발생
+     -확인 후 제대로 된 값을 전달 및 해결
+- 2. forms
+     -forms에서 fields명을 똑바로 하지 않아 오류 발생
+     -확인 후 models에 문제가 있는 것을 발견 및 해결
+- 3. views
+     -views에서 HTML과 연결이 안되는 오류 발견(특히 id, username 전달 문제)
+     -Models에 있는 관계 확인 후 디버깅 실행 및 해결 완료
+- 4. HTML
+     -TemplateNotFound 등 views와 연결 문제 발생
+     -확인 후 fields의 값에 문제 발견. 디버깅 실행 및 해결
