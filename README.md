@@ -33,7 +33,7 @@ ERD
 ### 회원기능
 --------------------------------------------------------
 # 로그인
-@require_http_methods(['GET', 'POST'])
+```@require_http_methods(['GET', 'POST'])
 def signin(request):
     if request.method == 'POST':
         form = AuthenticationForm(data = request.POST)
@@ -52,7 +52,7 @@ def signin(request):
         return render(request, 'account/signin.html', context)
 --------------------------------------------------------
 # 회원가입
-@require_http_methods(['GET', 'POST'])
+```@require_http_methods(['GET', 'POST'])
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -70,7 +70,7 @@ def signup(request):
         return render(request, 'account/signup.html', context)
 --------------------------------------------------------
 # 로그아웃
-@require_http_methods(['POST'])
+```@require_http_methods(['POST'])
 @login_required
 def user_logout(request):
     auth_logout(request)
