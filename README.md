@@ -28,6 +28,6 @@ Django 기초에 대한 지식을 높이고, 기초적인 문법과 디버깅 �
 
 대표적인 코드의 흐름(ERD)
 ERD
-[스크린샷 2024-12-26 194345](https://github.com/user-attachments/assets/6ea4c78e-e5e3-47a7-b950-6416c5076694)
+![전체적 ERD](https://github.com/user-attachments/assets/6ea4c78e-e5e3-47a7-b950-6416c5076694)
 
 
